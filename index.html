@@ -104,7 +104,9 @@
             margin-bottom: 4rem;
             background: linear-gradient(to right, #fff, #94a3b8);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
+            color: transparent;
             font-weight: 800;
             letter-spacing: -1px;
         }
@@ -130,7 +132,9 @@
             font-weight: 800;
             background: var(--gradient);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
+            color: transparent;
         }
 
         .nav-links {
@@ -205,6 +209,18 @@
             color: var(--text-muted);
             margin-bottom: 2rem;
             max-width: 500px;
+        }
+
+        /* --- NEW: Style for View Work Button --- */
+        .view-work-btn {
+            margin-left: 20px;
+            color: white;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .view-work-btn:hover {
+            color: var(--accent);
         }
 
         .hero-img {
@@ -307,22 +323,14 @@
             gap: 2rem;
         }
 
-        /* --- UPDATED CSS FOR EXPERTISE CARD --- */
         .skills-container {
             display: flex;
             flex-wrap: wrap;
-            /* This makes the tags wrap to the next line */
             justify-content: center;
-            /* Center the tags */
             gap: 10px;
-            /* This creates space between tags */
         }
 
         .skill-item {
-            /* display: inline-block; */
-            /* No longer needed, flex handles this */
-            /* margin: 5px; */
-            /* No longer needed, 'gap' is better */
             padding: 8px 20px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -450,11 +458,19 @@
             }
         }
 
+        /* --- UPDATED MOBILE STYLES (768px) --- */
         @media (max-width: 768px) {
 
             /* Reduce padding on sections for smaller screens */
             section {
                 padding: 4rem 5%;
+            }
+
+            /* Reduce padding on hero */
+            header#home {
+                padding-top: 6rem;
+                /* 80px nav height + space */
+                padding-bottom: 3rem;
             }
 
             .nav-links {
@@ -478,15 +494,46 @@
                 display: block;
             }
 
-            /* Adjust font sizes for mobile */
+            /* --- UPDATED: Adjust font sizes for mobile --- */
+            .hero-text h3 {
+                font-size: 1.0rem;
+                /* Was 1.2rem */
+            }
+
             .hero-text h1 {
-                font-size: 2.8rem;
+                font-size: 2.5rem;
+                /* Was 2.8rem */
+                line-height: 1.2;
             }
 
             .hero-text .typewriter {
-                font-size: 1.2rem;
+                font-size: 1.1rem;
+                /* Was 1.2rem */
                 height: 25px;
-                /* Adjust height for smaller font */
+                margin-bottom: 1.5rem;
+                /* Was 2.5rem */
+            }
+
+            .hero-text p {
+                font-size: 0.95rem;
+                /* Set specific smaller size */
+                line-height: 1.6;
+                margin: 0 auto 1.5rem;
+                /* Was 2rem margin-bottom */
+            }
+
+            /* --- NEW: Stack buttons on mobile --- */
+            .hero-buttons {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+                /* Creates space between buttons */
+            }
+
+            .view-work-btn {
+                margin-left: 0;
+                /* Remove left margin on mobile */
             }
 
             .section-title {
@@ -538,8 +585,10 @@
                     I have excelled at adding value to marketing projects, managing relationships with both internal and
                     external stakeholders.
                 </p>
-                <a href="#contact" class="btn-gradient">Let's Talk</a>
-                <a href="#experience" style="margin-left: 20px; color: white; font-weight: 600;">View Work ↓</a>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn-gradient">Let's Talk</a>
+                    <a href="#experience" class="view-work-btn">View Work ↓</a>
+                </div>
             </div>
             <div class="hero-img hidden">
                 <div class="img-wrapper">
