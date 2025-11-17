@@ -9,6 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/simple-lightbox/2.14.2/simple-lightbox.min.css" />
+
     <style>
         /* --- 1. Global Variables & Reset --- */
         :root {
@@ -139,7 +142,10 @@
 
         .nav-links {
             display: flex;
-            gap: 3rem;
+            flex-wrap: wrap;
+            /* Added for smaller screens if needed */
+            gap: 1.8rem;
+            /* Reduced gap slightly */
         }
 
         .nav-links a {
@@ -211,7 +217,6 @@
             max-width: 500px;
         }
 
-        /* --- NEW: Style for View Work Button --- */
         .view-work-btn {
             margin-left: 20px;
             color: white;
@@ -316,7 +321,152 @@
             color: var(--accent);
         }
 
-        /* --- 6. Skills & Education Grid --- */
+        /* --- 6. Project Highlight (TAB STYLES) --- */
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: -1px;
+            /* Pulls tabs onto the card border */
+            position: relative;
+            z-index: 2;
+        }
+
+        .tab-button {
+            padding: 12px 25px;
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            border-bottom: 1px solid var(--glass-border);
+            /* Default border */
+            color: var(--text-muted);
+            border-radius: 10px 10px 0 0;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: 0.3s ease;
+        }
+
+        .tab-button.active {
+            background: var(--bg-card);
+            /* Match card background */
+            color: white;
+            border-bottom: 1px solid var(--bg-card);
+            /* Hides border part */
+        }
+
+        .tab-content-wrapper {
+            border-top-left-radius: 0;
+            /* Make active tab connect */
+            padding-top: 2.5rem;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            /* 2 column grid */
+            gap: 2.5rem;
+            align-items: flex-start;
+        }
+
+        .project-meta {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .project-meta p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-meta p strong {
+            color: white;
+            display: inline-block;
+            min-width: 80px;
+        }
+
+        .project-card-heading {
+            color: var(--accent);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 0.5rem;
+        }
+
+        .project-subheading {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        /* --- 7. UPDATED: Gallery Section (Intelligent Grid) --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-auto-rows: 250px;
+            /* Define a base row height */
+            grid-auto-flow: dense;
+            /* Smartly fills gaps */
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            padding: 0;
+            /* Remove default padding */
+            overflow: hidden;
+            /* Clip the image */
+            border-radius: 20px;
+            /* Keep the rounded corners */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: var(--bg-card);
+            /* Add subtle background */
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* This will crop images to fit the grid cell */
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+            /* Zoom image inside the card on hover */
+        }
+
+        /* --- NEW: Grid span classes --- */
+        /* Use this class for TALL images (like 5.jpg, 8.jpg) */
+        .item-tall {
+            grid-row: span 2;
+        }
+
+        /* Use this class for WIDE images (like 6.jpg, 10.jpg) */
+        .item-wide {
+            grid-column: span 2;
+        }
+
+        /* --- 8. Skills & Education Grid --- */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -367,7 +517,7 @@
             font-size: 1.1rem;
         }
 
-        /* --- 7. Contact --- */
+        /* --- 9. Contact --- */
         .contact-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -419,6 +569,18 @@
             }
         }
 
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .hidden {
             opacity: 0;
             transform: translateY(40px);
@@ -456,9 +618,20 @@
                 margin-left: 0;
                 /* Remove left margin for simplicity */
             }
+
+            /* Stack project grid on tablets */
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+
+            /* UPDATED: Gallery columns for tablet */
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                grid-auto-rows: 200px;
+                /* Smaller base row for tablet */
+            }
         }
 
-        /* --- UPDATED MOBILE STYLES (768px) --- */
         @media (max-width: 768px) {
 
             /* Reduce padding on sections for smaller screens */
@@ -494,7 +667,27 @@
                 display: block;
             }
 
-            /* --- UPDATED: Adjust font sizes for mobile --- */
+            /* Adjust logo size on mobile */
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            /* Adjust tab buttons on mobile */
+            .tab-buttons {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            .tab-button {
+                padding: 10px 15px;
+                font-size: 0.85rem;
+                /* Make text smaller to fit */
+                flex-grow: 1;
+                /* Allow buttons to share space */
+                text-align: center;
+            }
+
+            /* Adjust font sizes for mobile */
             .hero-text h3 {
                 font-size: 1.0rem;
                 /* Was 1.2rem */
@@ -522,7 +715,6 @@
                 /* Was 2rem margin-bottom */
             }
 
-            /* --- NEW: Stack buttons on mobile --- */
             .hero-buttons {
                 display: flex;
                 flex-direction: column;
@@ -552,7 +744,15 @@
 
             .timeline-dot {
                 left: -34px;
-                /* Recalculate dot position: -(20px_margin + 10px_dot_half + 4px_border) */
+                /* Recalculate dot position */
+            }
+
+            /* UPDATED: Gallery columns for mobile */
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                /* Stack images vertically */
+                grid-auto-rows: 250px;
+                /* Taller rows for single column */
             }
         }
     </style>
@@ -568,6 +768,8 @@
             <li><a href="#home" class="active">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#experience">Experience</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#gallery">Gallery</a></li>
             <li><a href="#skills">Skills</a></li>
             <li><a href="#references">References</a></li>
             <li><a href="#contact">Contact</a></li>
@@ -692,6 +894,166 @@
         </div>
     </section>
 
+    <section id="projects">
+        <h2 class="section-title">Project Highlights</h2>
+
+        <div class="tab-buttons">
+            <button class="tab-button active" onclick="showProject(event, 'project-beltei')">BELTEI University</button>
+            <button class="tab-button" onclick="showProject(event, 'project-rs')">RS Residence</button>
+            <button class="tab-button" onclick="showProject(event, 'project-sinh')">Sinh Hak Hout</button>
+        </div>
+
+        <div class="glass-card tab-content-wrapper hidden">
+
+            <div id="project-beltei" class="tab-content active">
+                <h3 class="project-card-heading"
+                    style="text-align: center; border: none; color: white; margin-top: -1rem;">
+                    “Boosting Enrollment Through a Digital Awareness Campaign”
+                </h3>
+                <div class="project-grid">
+                    <div>
+                        <div class="project-meta">
+                            <p><strong>Role:</strong> Marketing Manager</p>
+                            <p><strong>Client:</strong> BELTEI University</p>
+                            <p><strong>Duration:</strong> 6 Months</p>
+                        </div>
+                        <h4 class="project-subheading">Project Overview</h4>
+                        <p style="color: #cbd5e1; font-size: 0.95rem;">
+                            BELTEI University was facing a decline in student inquiries. I was assigned to design and
+                            execute a campaign to increase awareness, generate high-quality leads, and strengthen the
+                            university’s digital presence.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 class="project-subheading">Objectives</h4>
+                        <ul class="job-desc" style="margin-bottom: 2rem;">
+                            <li>Increase online inquiries by 40% in 3 months.</li>
+                            <li>Raise brand awareness among high school graduates (17–25).</li>
+                            <li>Position the university as a leading modern education hub.</li>
+                        </ul>
+                        <h4 class="project-subheading">Strategy & Plan</h4>
+                        <ul class="job-desc">
+                            <li><strong>Social Media (FB, IG, TikTok):</strong> Ran targeted ads and created
+                                student-life videos.</li>
+                            <li><strong>Google Ads:</strong> Optimized for “best university near me,” “business degree,”
+                                etc.</li>
+                            <li><strong>Landing Page:</strong> Simplified inquiry form from 8 to 4 fields & added strong
+                                CTAs.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="project-rs" class="tab-content">
+                <h3 class="project-card-heading"
+                    style="text-align: center; border: none; color: white; margin-top: -1rem;">
+                    "RS Residence Furniture Campaign"
+                </h3>
+                <div class="project-grid">
+                    <div>
+                        <div class="project-meta">
+                            <p><strong>Role:</strong> Marketing Manager</p>
+                            <p><strong>Client:</strong> RS Residence</p>
+                            <p><strong>Type:</strong> Digital + Booth Sales</p>
+                        </div>
+                        <h4 class="project-subheading">Project Overview</h4>
+                        <p style="color: #cbd5e1; font-size: 0.95rem;">
+                            Led a project to boost brand visibility and booth sales. I created lifestyle video campaigns
+                            (e.g., "Day-in-the-Life," "Newly Weds") to show how RS furniture enhances real homes,
+                            converting online interest into purchases.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 class="project-subheading">Objectives</h4>
+                        <ul class="job-desc" style="margin-bottom: 2rem;">
+                            <li>Increase booth visitor traffic and monthly sales.</li>
+                            <li>Showcase furniture through emotional, storytelling videos.</li>
+                            <li>Strengthen brand as a stylish, modern, and cozy home brand.</li>
+                        </ul>
+                        <h4 class="project-subheading">Target Audience</h4>
+                        <ul class="job-desc">
+                            <li>Newly married couples & First-time homeowners.</li>
+                            <li>Young adults (22–35) & Families renovating.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div style="margin-top: 2.5rem;">
+                    <h3 class="project-card-heading">Campaign Concepts</h3>
+                    <h4 class="project-subheading" style="margin-top: 1.5rem;">A. “Day in the Life” Video Series</h4>
+                    <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 1rem;">
+                        Created videos of daily scenes (waking up, dining, relaxing on sofas) to make furniture feel
+                        relatable.
+                        <br><strong>Impact:</strong> Strong social media engagement and higher booth visits.
+                    </p>
+
+                    <h4 class="project-subheading" style="margin-top: 1.5rem;">B. “Newly Weds Life” Campaign</h4>
+                    <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 1rem;">
+                        Targeted new couples with the concept: “Build your first home, your first memories.”
+                        <br><strong>Impact:</strong> Increased shares and strong lead generation for bedroom/dining
+                        sets.
+                    </p>
+                </div>
+            </div>
+
+            <div id="project-sinh" class="tab-content">
+                <h3 class="project-card-heading"
+                    style="text-align: center; border: none; color: white; margin-top: -1rem;">
+                    “Retailer Attending Event”
+                </h3>
+                <div class="project-grid">
+                    <div>
+                        <div class="project-meta">
+                            <p><strong>Role:</strong> Marketing Manager</p>
+                            <p><strong>Client:</strong> Sinh Hak Hout</p>
+                            <p><strong>Duration:</strong> 6 Months</p>
+                            <p><strong>Type:</strong> Product Showcase & Sales Event</p>
+                        </div>
+                        <h4 class="project-subheading">Project Overview</h4>
+                        <p style="color: #cbd5e1; font-size: 0.95rem;">
+                            Sinh Hak & Pro planned to introduce new bathroom equipment and premium tiles. I developed
+                            and executed the “Retailer Attending” event to increase B2B awareness and boost direct sales
+                            by gathering key partners to experience products and place orders.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 class="project-subheading">Project Objectives</h4>
+                        <ul class="job-desc" style="margin-bottom: 2rem;">
+                            <li>Showcase new bathroom & tile collections to partners.</li>
+                            <li>Strengthen relationships with retailers & construction owners.</li>
+                            <li>Increase booth sales with limited-time promotions.</li>
+                            <li>Gather product feedback for future development.</li>
+                            <li>Close partnership deals with at least 20 retail stores.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="gallery">
+        <h2 class="section-title">Portrait of My Work</h2>
+        <div class="gallery-grid hidden">
+            <a href="1.jpg" class="gallery-item"><img src="1.jpg" alt="Portfolio Image 1"></a>
+            <a href="2.jpg" class="gallery-item"><img src="2.jpg" alt="Portfolio Image 2"></a>
+            <a href="3.jpg" class="gallery-item"><img src="3.jpg" alt="Portfolio Image 3"></a>
+            <a href="4.jpg" class="gallery-item"><img src="4.jpg" alt="Portfolio Image 4"></a>
+
+            <a href="5.jpg" class="gallery-item item-tall"><img src="5.jpg" alt="Portfolio Image 5"></a>
+
+            <a href="6.jpg" class="gallery-item item-wide"><img src="6.jpg" alt="Portfolio Image 6"></a>
+
+            <a href="7.jpg" class="gallery-item"><img src="7.jpg" alt="Portfolio Image 7"></a>
+
+            <a href="8.jpg" class="gallery-item item-tall"><img src="8.jpg" alt="Portfolio Image 8"></a>
+
+            <a href="9.jpg" class="gallery-item"><img src="9.jpg" alt="Portfolio Image 9"></a>
+
+            <a href="10.jpg" class="gallery-item item-wide"><img src="10.jpg" alt="Portfolio Image 10"></a>
+            <a href="11.jpg" class="gallery-item"><img src="11.jpg" alt="Portfolio Image 11"></a>
+        </div>
+    </section>
+
     <section id="skills">
         <h2 class="section-title">Skills & Education</h2>
         <div class="grid-container">
@@ -799,11 +1161,30 @@
         <p>© <span id="current-year"></span> Savon Phettra. Designed with professional elegance.</p>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simple-lightbox/2.14.2/simple-lightbox.min.js"></script>
+
     <script>
         // Mobile Menu
         function toggleMenu() {
             document.querySelector('.nav-links').classList.toggle('active');
         }
+
+        // Tabbed Projects
+        function showProject(evt, projectName) {
+            let tabContent = document.querySelectorAll('.tab-content');
+            tabContent.forEach(tab => {
+                tab.style.display = "none";
+                tab.classList.remove('active');
+            });
+            let tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+            document.getElementById(projectName).style.display = "block";
+            document.getElementById(projectName).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
 
         // Typewriter Effect
         const textElement = document.getElementById('typing-text');
@@ -839,10 +1220,10 @@
 
         document.querySelectorAll('.hidden').forEach((el) => observer.observe(el));
 
-        // --- NEW: Dynamic Year ---
+        // Dynamic Year
         document.getElementById('current-year').textContent = new Date().getFullYear();
 
-        // --- NEW: Active Nav on Scroll ---
+        // Active Nav on Scroll
         const sections = document.querySelectorAll('section[id], header[id]');
         const navLinks = document.querySelectorAll('.nav-links a');
 
@@ -869,6 +1250,12 @@
 
         sections.forEach(section => {
             sectionObserver.observe(section);
+        });
+
+        // --- NEW: Initialize Lightbox ---
+        new SimpleLightbox('.gallery-grid a', {
+            /* Optional: Add options here */
+            // e.g. captionDelay: 250
         });
 
     </script>
